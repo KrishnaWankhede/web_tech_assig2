@@ -6,3 +6,8 @@ handlers:
 
 - url: /.*
   script: auto
+
+env_variables:
+TOMORROW_API_KEY = 'ooZU1Z91HqOzkSVLvcbyup6f6QXvOZlu'
+GOOGLE_API_KEY = 'AIzaSyBOBwMZ_B-p0GTKWVXhp4TzCr9i1ULj48I'
+IPINFO_TOKEN = '1811f02070c9a1'
