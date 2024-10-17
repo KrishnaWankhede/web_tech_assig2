@@ -96,7 +96,7 @@ document.getElementById('auto-detect').addEventListener('change', function () {
 });
 
 function fetchWeatherData(street, city, state) {
-    return fetch(`http://127.0.0.1:5000/get_weather?street=${encodeURIComponent(street)}&city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}`)
+    return fetch(`https://assignweb2.wl.r.appspot.com/get_weather?street=${encodeURIComponent(street)}&city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}`)
         .then(response => response.json())
         .then(data => {
             if (data.error) {
