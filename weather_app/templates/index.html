@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Search</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&family=Open+Sans:wght@300;400;600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/windbarb.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://code.highcharts.com/modules/datagrouping.js"></script>
+    <script src="https://code.highcharts.com/modules/pattern-fill.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+
+   
+
+  </head>
+  <body>
+    <div class="weather-container">
+      <div class="form-header">
+        <h2>Weather Search</h2>
+        <p>Fill out the form to get weather info!</p>
+      </div>
+      <div class="weather-form">
+        <form id="weather-form">
+          <div class="form-group">
+            <div id="street-error" class="error-bubble">Fill out this field</div>
+            <label for="street">Street <span class="required">*</span></label>
+            <input type="text" id="street" name="street"required/>
+          </div>
+          <div class="form-row">
+            <div class="form-group half-width">
+              <label for="city">City <span class="required">*</span></label>
+              <input type="text" id="city" name="city" required/>
+            </div>
+            <div class="form-group half-width">
+              <label for="state">State <span class="required">*</span></label>
+              <select id="state" name="state" required>
+                <option value="">Select your state</option>
+            
+                <option value="Alabama">Alabama</option>
+                <option value="Alaska">Alaska</option>
+                <option value="Arizona">Arizona</option>
+                <option value="Arkansas">Arkansas</option>
+                <option value="California">California</option>
+                <option value="Colorado">Colorado</option>
+                <option value="Connecticut">Connecticut</option>
+                <option value="Delaware">Delaware</option>
+                <option value="Florida">Florida</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Hawaii">Hawaii</option>
+                <option value="Idaho">Idaho</option>
+                <option value="Illinois">Illinois</option>
+                <option value="IN">Indiana</option>
+                <option value="Iowa">Iowa</option>
+                <option value="Kansas">Kansas</option>
+                <option value="Kentucky">Kentucky</option>
+                <option value="Louisiana">Louisiana</option>
+                <option value="Maine">Maine</option>
+                <option value="Maryland">Maryland</option>
+                <option value="Massachusetts">Massachusetts</option>
+                <option value="Michigan">Michigan</option>
+                <option value="Minnesota">Minnesota</option>
+                <option value="Mississippi">Mississippi</option>
+                <option value="Missouri">Missouri</option>
+                <option value="Montana">Montana</option>
+                <option value="Nebraska">Nebraska</option>
+                <option value="Nevada">Nevada</option>
+                <option value="New Hampshire">New Hampshire</option>
+                <option value="New Jersey">New Jersey</option>
+                <option value="New Mexico">New Mexico</option>
+                <option value="New York">New York</option>
+                <option value="North Carolina">North Carolina</option>
+                <option value="North Dakota">North Dakota</option>
+                <option value="Ohio">Ohio</option>
+                <option value="Oklahoma">Oklahoma</option>
+                <option value="Oregon">Oregon</option>
+                <option value="Pennsylvania">Pennsylvania</option>
+                <option value="Rhode Island">Rhode Island</option>
+                <option value="South Carolina">South Carolina</option>
+                <option value="South Dakota">South Dakota</option>
+                <option value="Tennessee">Tennessee</option>
+                <option value="Texas">Texas</option>
+                <option value="Utah">Utah</option>
+                <option value="Vermont">Vermont</option>
+                <option value="Virginia">Virginia</option>
+                <option value="Washington">Washington</option>
+                <option value="West Virginia">West Virginia</option>
+                <option value="Wisconsin">Wisconsin</option>
+                <option value="Wyoming">Wyoming</option>
+              </select>
+            </div>
+          </div>
+          <div class="checkbox-group">
+            <label for="auto-detect">Want us to auto-detect your location? Check here</label>
+            <input type="checkbox" id="auto-detect" name="auto-detect" onclick="toggleFields()" />
+          </div>
+          <div class="button-group">
+            <button type="submit" class="submit-btn">SUBMIT</button>
+            <button type="reset" class="clear-btn" onclick="clearAll()">CLEAR</button>
+          </div>
+        </form>
+      </div>
+      <div id="weather-result" style="display: none;">
+        <h3 id="location"></h3>
+        <div id="weather-info"></div>
+        <div id="weather-charts"></div>
+        
+    </div> 
+  </div>
+    <div class="weather-body" id="weather-body" style="display: none;">
+        <div class="weather-card">
+            <h2 id="location-heading"></h2> <!-- Dynamically updated location -->
+            <div class="temp-row">
+                <img src="" class="weather-icon" alt="weather-icon" id="weather-icon" />
+                <h1 id="temp">--°</h1>
+            </div>
+            <p class="weather-condition" id="condition">Condition</p>
+            <div class="weather-stats">
+                <div class="stat">
+                    <div class="stat-label">Humidity</div>
+                    <img src="/static/Images/humidity.png" alt="Humidity Icon" class="stat-icon" />
+                    <div class="stat-value" id="humidity">--%</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Pressure</div>
+                    <img src="/static/Images/Pressure.png" alt="Pressure Icon" class="stat-icon" />
+                    <div class="stat-value" id="pressure">-- inHg</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Wind Speed</div>
+                    <img src="/static/Images/wind_speed.png" alt="Wind Speed Icon" class="stat-icon" />
+                    <div class="stat-value" id="wind-speed">-- mph</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Visibility</div>
+                    <img src="/static/Images/Visibility.png" alt="Visibility Icon" class="stat-icon" />
+                    <div class="stat-value" id="visibility">-- mi</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Cloud Cover</div>
+                    <img src="/static/Images/Cloud_Cover.png" alt="Cloud Cover Icon" class="stat-icon" />
+                    <div class="stat-value" id="cloud-cover">--%</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">UV Level</div>
+                    <img src="/static/Images/UV_Level.png" alt="UV Level Icon" class="stat-icon" />
+                    <div class="stat-value" id="uv-index">--</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="weather-forecastable" id="weather-forecastable" style="display: none;">
+         <table style="border-collapse: separate; border-spacing:0 5px;">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Temp High</th>
+                    <th>Temp Low</th>
+                    <th>Wind Speed</th>
+                </tr>
+            </thead>
+            <tbody id="forecast-table"></tbody>
+        </table>
+    </div>
+
+    
+</div>
+
+<div class="weather-details" style="display: none">
+  <h3 style="text-align: center;">Daily Weather Details</h3>
+  <div class="weather-card-new">
+      <div class="weather-header">
+          <p id="date">--</p>
+          <p id="condition1">--</p>
+          <p id="temperature">--°F</p>
+      </div>
+      <img src="/static/Images/Cloud_Cover.png" id="weather-icon-3" alt="Weather Icon" class="weather-icon" />
+      <div class="weather-stats-new">
+          <p>Precipitation: <span id="precipitation1"><b></b></span></p>
+          <p>Chance of Rain: <span id="chance-of-rain1"></span></p>
+          <p>Wind Speed: <span id="wind-speed-new1"></span></p>
+          <p>Humidity: <span id="humidity-new1"></span></p>
+          <p>Visibility: <span id="visibility-new1"></span></p>
+          <p>Sunrise/Sunset: <span id="sunrise-sunset1"></span></p>
+      </div>
+  </div>
+
+    <div id="weather-charts" style="display: none;">
+      <div id="temp-range-container" style="width:100%; height:400px;"></div>
+      <div id="hourly-weather-container" style="width:100%; height:400px;"></div>
+    </div>
+    
+    <p>Weather Charts</p>
+    <img src="/static/Images/point-down-512.png" id="toggle-arrow" alt="Toggle Arrow" class="toggle-icon" />
+    
+    
+
+  
+
+
+
+<script src="/static/weather.js"></script>
+  </body>
+</html>
